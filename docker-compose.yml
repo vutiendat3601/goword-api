@@ -1,0 +1,23 @@
+version: '3.7'
+name: goword
+services:
+  # goword-db
+  goword-db:
+    image: postgres:16.0-alpine3.18
+    container_name: goword-db
+    hostname: goword-db
+    volumes:
+      - ./database/goword-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: goword
+      POSTGRES_PASSWORD: 123456Aa@
+      POSTGRES_DB: goword
+    ports:
+      - '9700:5432'
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
+    name: goword
