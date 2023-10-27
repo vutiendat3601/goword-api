@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+  flyway:
+    ignore-migration-patterns: '*:missing'
+    validate-on-migrate: false
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USER}
+    password: ${MAIL_PASS}
+    properties:
+      smtp:
+        auth: true
+      mail:
+        smtp:
+          starttls:
+            enable: true
+
+server:
+  port: ${PORT}
+  ssl:
+    enabled: ${SSL_ENABLED}
+    key-store: classpath:cert/ssl/goword.datvu.tech/certificate.p12
+    key-store-password: 123456Aa@
+    keyStoreType: PKCS12

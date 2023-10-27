@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://vietnix.datvu.tech:9700/goword
+    username: goword
+    password: 123456Aa@
+  jpa:
+    open-in-view: true
+    show-sql: true
+    properties:
+      hibernate:
+        '[dialect]': org.hibernate.dialect.PostgreSQL10Dialect
+        '[format_sql]': true
+
+  flyway:
+    ignore-migration-patterns: '*:missing'
+    validate-on-migrate: false
+app:
+  storage_dir: /home/vutiendat3601/goword

@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:9700/goword
+    username: goword
+    password: 123456Aa@
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: vutien.dat.3601@gmail.com
+    password: sbsflgbfipkxpjho
+    properties:
+      smtp:
+        auth: true
+      mail:
+        smtp:
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      max-file-size: 4MB
+      max-request-size: 4MB
+server:
+  port: 9800
+
+app:
+  static_resource_url: http://goword.datvu.tech
+  storage_dir: /root/goword
+  name: GoWord
+  website: http://goword.datvu.tech
+  auth:
+    verification_code:
+      valid_time_sec: 1800
+  token:
+    scret_key: 8510970d$f0cf@4fc1/8f7a=614a5f29141a
+    valid_time_sec: 1800
+  refresh_token:
+    valid_time_sec: 3200

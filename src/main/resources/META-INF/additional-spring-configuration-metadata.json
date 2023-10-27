@@ -1,0 +1,49 @@
+{
+  "properties": [
+    {
+      "name": "app.token.valid_time_sec",
+      "type": "java.lang.String",
+      "description": "A description for 'app.token.valid_time_sec'"
+    },
+    {
+      "name": "app.refresh_token.valid_time_sec",
+      "type": "java.lang.String",
+      "description": "A description for 'app.refresh_token.valid_time_sec'"
+    },
+    {
+      "name": "app.token.scret_key",
+      "type": "java.lang.String",
+      "description": "A description for 'app.token.scret_key'"
+    },
+    {
+      "name": "app.name",
+      "type": "java.lang.String",
+      "description": "A description for 'app.name'"
+    },
+    {
+      "name": "app.website",
+      "type": "java.lang.String",
+      "description": "A description for 'app.website'"
+    },
+    {
+      "name": "app.auth.verification_code.valid_time_sec",
+      "type": "java.lang.String",
+      "description": "A description for 'app.auth.verification_code.valid_time_sec'"
+    },
+    {
+      "name": "app.cors_hosts",
+      "type": "java.util.List<java.lang.String>>",
+      "description": "A description for 'app.cors_hosts'"
+    },
+    {
+      "name": "app.storage_dir",
+      "type": "java.lang.String",
+      "description": "A description for 'app.storage_dir'"
+    },
+    {
+      "name": "app.static_resource_url",
+      "type": "java.lang.String",
+      "description": "A description for 'app.static_resource_url'"
+    }
+  ]
+}
