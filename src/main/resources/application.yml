@@ -27,7 +27,7 @@ app:
   static_resource_url: http://goword.datvu.tech:9801
   storage_dir: /root/goword
   name: GoWord
-  website: http://goword.datvu.tech
+  website: ${WEBSITE:http://goword.datvu.tech}
   auth:
     verification_code:
       valid_time_sec: 1800

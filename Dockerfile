@@ -22,6 +22,8 @@ ENV MAIL_HOST=
 ENV MAIL_PORT=
 ENV MAIL_USER=
 ENV MAIL_PASS=
+ENV WEBSITE=
+
 
 EXPOSE 9800
 CMD java -jar -Dspring.profiles.active=${PROFILE} /opt/goword/goword-api-1.0.0.jar
