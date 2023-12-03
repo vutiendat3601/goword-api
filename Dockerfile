@@ -13,13 +13,13 @@ RUN mkdir -p ~/goword/images
 RUN chmod 777 ~/goword/images
 
 ENV PROFILE=stag
+ENV SSL_ENABLED=TRUE
 ENV PORT=9800
 ENV DB_URL=
 ENV DB_USER=
 ENV DB_PASS=
 ENV MAIL_HOST=
-ENV MAILRUN mkdir /usr/share/goword && mkdir /usr/share/goword/images
-RUN chmod 777 -R /usr/share/goword_PORT=
+ENV MAIL_PORT=
 ENV MAIL_USER=
 ENV MAIL_PASS=
 
