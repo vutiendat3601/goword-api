@@ -2,7 +2,6 @@ FROM maven:3.9.4-eclipse-temurin-17-alpine AS builder
 WORKDIR /opt/goword
 
 COPY . .
-RUN mvn dependency:resolve
 RUN mvn clean install -DskipTests
 ################################################################################
 FROM eclipse-temurin:17.0.7_7-jre-alpine
