@@ -1,0 +1,70 @@
+version: '3.7'
+name: goword--stag
+services:
+  ## goword-db
+  goword-db--stag:
+    image: postgres:16.0-alpine3.18
+    container_name: goword-db--stag
+    hostname: goword-db--stag
+    volumes:
+      - ./database/goword-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: goword
+      POSTGRES_PASSWORD: 123456Aa@
+      POSTGRES_DB: goword
+    ports:
+      - '9700:5432'
+    networks:
+      - default
+
+  ## goword-api
+  goword-api--stag:
+    image: vutiendat3601/goword-api:1.0.0
+    container_name: goword-api--stag
+    hostname: goword-api--stag
+    environment:
+      PROFILE: stag
+      PORT: 9800
+      DB_URL: jdbc:postgresql://goword-db--stag:5432/goword
+      DB_USER: goword
+      DB_PASS: 123456Aa@
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_USER: vutien.dat.3601@gmail.com
+      MAIL_PASS: sbsflgbfipkxpjho
+      SSL_ENABLED: false
+    volumes:
+      - ./storage:/root/goword
+    ports:
+      - 9800:9800
+    networks:
+      - default
+
+  fileserver--stag:
+    image: nginx:mainline-alpine3.18-slim
+    container_name: fileserver--stag
+    hostname: fileserver--stag
+    volumes:
+      - ./storage/:/usr/share/nginx/html/
+    networks:
+      - default
+    ports:
+      - '9801:80'
+
+    ## goword-fe
+  goword-fe--stag:
+    image: vutiendat3601/goword-fe:1.0.0-stag
+    container_name: goword-fe--stag
+    hostname: goword-fe
+    environment:
+      REACT_APP_API_BASE_URL: http://vietnix.datvu.tech:9800
+    ports:
+      - '80:80'
+    volumes:
+      - ./storage/images:/usr/share/nginx/html/images
+    networks:
+      - default
+networks:
+  default:
+    driver: bridge
+    name: goword--stag

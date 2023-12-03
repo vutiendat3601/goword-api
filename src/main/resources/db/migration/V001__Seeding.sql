@@ -17,23 +17,27 @@ INSERT INTO permissions (id,"name","desc","type",url,url_method,active,created_b
   (gen_random_uuid(),'MANAGE_EXCERCISE','Manage exercise','MENU',NULL,NULL,true,'SYSTEM','SYSTEM','2023-11-24 13:29:06.282712+07','2023-11-24 13:29:06.282712+07');
 
 -- ## Seeding RolePermission
-INSERT INTO role_permission (id, role_name, permission_name, active, created_by, updated_by, created_at, updated_at) VALUES
-  -- ## ADMIN
-  (nextval('role_permission_id_seq'::regclass), 'ADMIN', 'CREATE_PLAN', true, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'ADMIN', 'EDIT_PLAN', true, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'ADMIN', 'CREATE_EXERCISE', true, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'ADMIN', 'EDIT_EXERCISE', true, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'ADMIN', 'DELETE_EXERCISE', true, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'ADMIN', 'MANAGE_USER', true, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'ADMIN', 'MANAGE_EXERCISE', true, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  -- ## USER
-  (nextval('role_permission_id_seq'::regclass), 'USER', 'CREATE_PLAN', false, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'USER', 'EDIT_PLAN', false, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'USER', 'CREATE_EXERCISE', false, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'USER', 'EDIT_EXERCISE', false, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'USER', 'DELETE_EXERCISE', false, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'USER', 'MANAGE_USER', false, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (nextval('role_permission_id_seq'::regclass), 'USER', 'MANAGE_EXERCISE', false, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO role_permission (role_name,permission_name,active,created_by,updated_by,created_at,updated_at) VALUES
+  -- ## Admin
+  ('ADMIN','CREATE_PLAN',true,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('ADMIN','EDIT_PLAN',true,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('ADMIN','CREATE_EXERCISE',true,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('ADMIN','EDIT_EXERCISE',true,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('ADMIN','DELETE_EXERCISE',true,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('ADMIN','MANAGE_USER',true,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('ADMIN','MANAGE_EXERCISE',true,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('ADMIN','DELETE_PLAN',true,'SYSTEM','SYSTEM','2023-11-30 13:48:23.863','2023-11-30 13:48:23.863'),
+
+   -- ## User
+  ('USER','CREATE_PLAN',false,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('USER','EDIT_PLAN',false,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('USER','CREATE_EXERCISE',false,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('USER','EDIT_EXERCISE',false,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('USER','DELETE_EXERCISE',false,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('USER','MANAGE_USER',false,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('USER','MANAGE_EXERCISE',false,'SYSTEM','SYSTEM','2023-11-24 18:09:48.367','2023-11-24 18:09:48.367'),
+  ('USER','DELETE_PLAN',false,'SYSTEM','SYSTEM','2023-11-30 13:48:52.667','2023-11-30 13:48:52.667');
+
 
 -- ## Seeding User
 INSERT INTO users (id, first_name, last_name, email, pwd, verified, verif_code, verif_code_exp_at, created_by, updated_by, created_at, updated_at) VALUES
