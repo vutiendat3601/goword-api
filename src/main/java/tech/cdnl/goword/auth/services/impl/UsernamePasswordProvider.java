@@ -14,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import tech.cdnl.goword.auth.models.dto.SessionDto;
 import tech.cdnl.goword.auth.models.entity.Session;
 import tech.cdnl.goword.auth.repos.SessionRepo;
+import tech.cdnl.goword.auth.services.AuthServiceAsync;
+import tech.cdnl.goword.exceptions.AppErrorCode;
 import tech.cdnl.goword.exceptions.AppErrorMessage;
+import tech.cdnl.goword.exceptions.AuthException;
 import tech.cdnl.goword.user.models.dto.UserDto;
 import tech.cdnl.goword.user.models.entity.User;
 import tech.cdnl.goword.user.repos.UserRepo;
@@ -25,13 +28,22 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
     private final UserRepo userRepo;
     private final PasswordEncoder passEncoder;
     private final SessionRepo sessionRepo;
+    private final AuthServiceAsync authServiceAsync;
 
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
         String email = auth.getPrincipal() + "";
         String password = auth.getCredentials() + "";
         User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new BadCredentialsException(AppErrorMessage.USER_NOT_FOUND));
+                .orElseThrow(() -> new AuthException(AppErrorMessage.USER_NOT_FOUND));
+        if (!user.isVerified()) {
+            if (user.getVerificationCodeExpireAt() == null ||
+                    user.getVerificationCodeExpireAt() <= ZonedDateTime.now().toEpochSecond()) {
+                authServiceAsync.sendEmailVerificationCode(user.getEmail());
+            }
+            throw new AuthException(AppErrorMessage.ACCOUNT_EMAIL_NOT_VERIFIED,
+                    AppErrorCode.ACCOUNT_EMAIL_NOT_VERIFIED);
+        }
         if (passEncoder.matches(password, user.getPassword())) {
             Session session = new Session(user.getId(), ZonedDateTime.now());
             session.setCreatedBy(email);

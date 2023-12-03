@@ -5,7 +5,6 @@ import java.time.ZonedDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,13 +28,13 @@ public class AppExceptionHandler {
 				.body(errResp);
 	}
 
-	@ExceptionHandler(BadCredentialsException.class)
-	public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException e) {
+	@ExceptionHandler(AuthException.class)
+	public ResponseEntity<ErrorResponse> handleBadCredentialsException(AuthException e) {
 		log.error("[ %s ] %s".formatted(RuntimeException.class.getSimpleName(), e.getMessage()));
 		ErrorResponse errResp = new ErrorResponse(
 				ApiResponseStatus.ERROR,
-				AppErrorMessage.UNAUTHORIZED,
-				AppErrorCode.UNAUTHORIZED,
+				e.getMessage(),
+				e.getErrorCode(),
 				ZonedDateTime.now().toEpochSecond());
 		return ResponseEntity
 				.status(HttpStatus.UNAUTHORIZED)

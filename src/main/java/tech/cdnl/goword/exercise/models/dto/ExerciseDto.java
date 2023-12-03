@@ -1,7 +1,6 @@
-package tech.cdnl.goword.plan.models.dto;
+package tech.cdnl.goword.exercise.models.dto;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,23 +8,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.cdnl.goword.exercise.models.dto.ExerciseDto;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class PlanDto {
+public class ExerciseDto {
     private UUID id;
 
     private String name;
 
-    private String description;
-
     private String thumb;
 
-    private ZonedDateTime createdAt;
+    private String content;
 
-    private List<ExerciseDto> exercises;
+    private ZonedDateTime createdAt;
 
     @JsonProperty("createdAt")
     public long getCreatedAt() {

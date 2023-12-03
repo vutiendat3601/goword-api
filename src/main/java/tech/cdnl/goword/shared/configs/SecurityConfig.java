@@ -5,8 +5,6 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
-import javax.naming.AuthenticationException;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -24,10 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tech.cdnl.goword.auth.services.impl.RefreshTokenProvider;
 import tech.cdnl.goword.auth.services.impl.UsernamePasswordProvider;
 import tech.cdnl.goword.exceptions.AppErrorCode;
 import tech.cdnl.goword.exceptions.AppErrorMessage;
+import tech.cdnl.goword.exceptions.AuthException;
 import tech.cdnl.goword.exceptions.ErrorResponse;
 import tech.cdnl.goword.shared.filter.JwtTokenFilter;
 import tech.cdnl.goword.shared.filter.RefreshTokenFilter;
@@ -52,12 +50,14 @@ public class SecurityConfig {
     @Bean
     AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
-            log.error("[ %s ] %s".formatted(AuthenticationException.class.getSimpleName(), authException.getMessage()));
+            log.error("[ %s ] %s".formatted(authException.getClass().getSimpleName(), authException.getMessage()));
             ObjectMapper objMapper = new ObjectMapper();
+            String errCode = (authException instanceof AuthException) ? ((AuthException) authException).getErrorCode()
+                    : AppErrorCode.UNAUTHORIZED;
             ErrorResponse errResp = new ErrorResponse(
                     ApiResponseStatus.ERROR,
                     AppErrorMessage.UNAUTHORIZED,
-                    AppErrorCode.UNAUTHORIZED,
+                    errCode,
                     ZonedDateTime.now().toEpochSecond());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setStatus(401);
@@ -70,7 +70,6 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             UsernamePasswordProvider usernamePasswordProvider,
-            RefreshTokenProvider refreshTokenProvider,
             AuthenticationEntryPoint authEntryPoint,
             JwtTokenFilter jwtTokenFilter,
             RefreshTokenFilter refTokenFilter) throws Exception {
@@ -86,7 +85,7 @@ public class SecurityConfig {
                 }))
                 .authorizeRequests(
                         reqs -> reqs
-                                .antMatchers("/auth/sign-up").permitAll()
+                                .antMatchers("/auth/sign-up", "/auth/email-verification").permitAll()
                                 .anyRequest().authenticated())
                 .addFilterAfter(
                         refTokenFilter,
@@ -95,8 +94,7 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(authEntryPoint))
                 .addFilterAfter(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
-                .authenticationProvider(usernamePasswordProvider)
-                .authenticationProvider(refreshTokenProvider);
+                .authenticationProvider(usernamePasswordProvider);
         return http.build();
     }
 

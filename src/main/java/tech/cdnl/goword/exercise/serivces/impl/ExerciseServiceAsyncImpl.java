@@ -1,4 +1,4 @@
-package tech.cdnl.goword.plan.services.impl;
+package tech.cdnl.goword.exercise.serivces.impl;
 
 import java.nio.file.Path;
 
@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import tech.cdnl.goword.plan.services.PlanServiceAsync;
+import tech.cdnl.goword.exercise.serivces.ExerciseServiceAsync;
 import tech.cdnl.goword.shared.utils.FileUtil;
 
 @Service
-public class PlanServiceAsyncImpl implements PlanServiceAsync {
+public class ExerciseServiceAsyncImpl implements ExerciseServiceAsync {
     @Value("${app.storage_dir}")
     private String storageDir;
 

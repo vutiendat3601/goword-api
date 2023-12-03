@@ -68,7 +68,7 @@ public class AuthServiceAsyncImpl implements AuthServiceAsync {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String confirmLink = appWebsite + "/verify?code=" + verificationCode;
+        String confirmLink = appWebsite + "/auth/email-verification?code=" + verificationCode;
         String newConfirmLink = appWebsite + "/re-verify?email=" + email;
         String content = contentBuilder.toString();
         content = content.replace("${app-name}", appName);

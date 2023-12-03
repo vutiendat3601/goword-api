@@ -22,7 +22,10 @@ spring:
 server:
   port: ${PORT}
   ssl:
-    enabled: ${SSL_ENABLED}
+    enabled: true
     key-store: classpath:cert/ssl/goword.datvu.tech/certificate.p12
     key-store-password: 123456Aa@
     keyStoreType: PKCS12
+app:
+  website: https://goword.datvu.tech
+  static_resource_url: https://goword.datvu.tech

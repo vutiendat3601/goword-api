@@ -1,3 +1,4 @@
+-- ## User
 CREATE TABLE users(
 	id uuid NOT NULL PRIMARY KEY,
 	first_name varchar(255) NOT NULL,
@@ -13,6 +14,7 @@ CREATE TABLE users(
 	updated_at timestamptz NOT NULL DEFAULT current_timestamp
 );
 
+-- ## Role
 CREATE TABLE roles(
 	id uuid NOT NULL PRIMARY KEY,
 	"name" varchar(32) NOT NULL UNIQUE,
@@ -24,6 +26,7 @@ CREATE TABLE roles(
 	updated_at timestamptz NOT NULL DEFAULT current_timestamp
 );
 
+-- ## Permission
 CREATE TABLE permissions(
 	id uuid NOT NULL PRIMARY KEY,
 	"name" varchar(32) NOT NULL UNIQUE,
@@ -38,6 +41,7 @@ CREATE TABLE permissions(
 	updated_at timestamptz NOT NULL DEFAULT current_timestamp
 );
 
+-- ## Role_Permission
 CREATE TABLE role_permission(
 	id serial8 NOT NULL PRIMARY KEY,
 	role_name varchar(32) NOT NULL,
@@ -49,6 +53,7 @@ CREATE TABLE role_permission(
 	updated_at timestamptz NOT NULL DEFAULT current_timestamp
 );
 
+-- ## Session
 CREATE TABLE sessions(
 	id uuid NOT NULL PRIMARY KEY,
 	user_id uuid NOT NULL,
@@ -62,23 +67,50 @@ CREATE TABLE sessions(
 	updated_at timestamptz NOT NULL DEFAULT current_timestamp
 );
 
-CREATE TABLE plans(
-	id uuid NOT NULL PRIMARY KEY,
-	"name" varchar(255) NOT NULL UNIQUE,
-	"desc" text,
-	avatar varchar(255),
-	deleted boolean NOT NULL DEFAULT true,
+-- ## User_Role
+CREATE TABLE user_role(
+	id serial8 NOT NULL PRIMARY KEY,
+	user_id uuid NOT NULL,
+	role_name varchar(32) NOT NULL,
+	active boolean NOT NULL DEFAULT false,
 	created_by varchar(320) NOT NULL,
 	updated_by varchar(320) NOT NULL,
 	created_at timestamptz NOT NULL DEFAULT current_timestamp,
 	updated_at timestamptz NOT NULL DEFAULT current_timestamp
 );
 
-CREATE TABLE user_role(
+-- ## Plan
+CREATE TABLE plans(
+	id uuid NOT NULL PRIMARY KEY,
+	"name" varchar(255) NOT NULL UNIQUE,
+	"desc" text,
+	thumb varchar(255),
+	deleted boolean NOT NULL DEFAULT false,
+	created_by varchar(320) NOT NULL,
+	updated_by varchar(320) NOT NULL,
+	created_at timestamptz NOT NULL DEFAULT current_timestamp,
+	updated_at timestamptz NOT NULL DEFAULT current_timestamp
+);
+
+-- ## Exercise
+CREATE TABLE exercises(
+	id uuid NOT NULL PRIMARY KEY,
+	"name" varchar(255) NOT NULL,
+	content text NOT NULL, 
+	thumb varchar(255),
+	deleted boolean NOT NULL DEFAULT false,
+	created_by varchar(320) NOT NULL,
+	updated_by varchar(320) NOT NULL,
+	created_at timestamptz NOT NULL DEFAULT current_timestamp,
+	updated_at timestamptz NOT NULL DEFAULT current_timestamp
+);
+
+-- ## Exercise_Plan
+CREATE TABLE exercise_plan(
 	id serial8 NOT NULL PRIMARY KEY,
-	user_id uuid NOT NULL,
-	role_name varchar(32) NOT NULL,
-	active boolean NOT NULL DEFAULT false,
+    exercise_id uuid,
+    plan_name varchar(255),
+    active boolean NOT NULL DEFAULT true,
 	created_by varchar(320) NOT NULL,
 	updated_by varchar(320) NOT NULL,
 	created_at timestamptz NOT NULL DEFAULT current_timestamp,

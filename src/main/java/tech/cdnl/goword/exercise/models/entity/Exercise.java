@@ -1,8 +1,7 @@
-package tech.cdnl.goword.plan.models.entity;
+package tech.cdnl.goword.exercise.models.entity;
 
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -24,28 +23,26 @@ import tech.cdnl.goword.shared.models.AbstractEntity;
 @EqualsAndHashCode(callSuper = false)
 @Where(clause = "deleted = false")
 @Entity
-@Table(name = "plans")
-public class Plan extends AbstractEntity {
+@Table(name = "exercises")
+public class Exercise extends AbstractEntity {
 
     @Id
     @Type(type = "pg-uuid")
-    @GeneratedValue(generator = "plans_id_gen")
-    @GenericGenerator(name = "plans_id_gen", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "exercises_id_gen")
+    @GenericGenerator(name = "exercises_id_gen", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
     private String name;
 
-    @Column(name = "`desc`")
-    private String description;
+    private String content;
 
     private String thumb;
 
     private boolean deleted;
 
-    public Plan(String name, String description, String avatar) {
+    public Exercise(String name, String content, String thumb) {
         this.name = name;
-        this.description = description;
-        this.thumb = avatar;
+        this.content = content;
+        this.thumb = thumb;
     }
-
 }

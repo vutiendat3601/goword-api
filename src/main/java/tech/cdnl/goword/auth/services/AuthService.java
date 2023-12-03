@@ -8,11 +8,13 @@ import org.springframework.validation.annotation.Validated;
 
 import tech.cdnl.goword.auth.models.dto.SessionDto;
 import tech.cdnl.goword.auth.models.dto.TokenDto;
-import tech.cdnl.goword.auth.models.request.SignUpRequest;
+import tech.cdnl.goword.auth.models.request.UserRequest;
 import tech.cdnl.goword.user.models.dto.UserDto;
 
 public interface AuthService {
-    void signUp(SignUpRequest signUpReq);
+    void signUp(UserRequest userReq);
+
+    void updateUser(UserRequest userReq);
 
     @Validated
     TokenDto generateToken(SessionDto sessionDto);

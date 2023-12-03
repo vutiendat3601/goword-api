@@ -24,7 +24,7 @@ server:
   port: 9800
 
 app:
-  static_resource_url: http://goword.datvu.tech
+  static_resource_url: http://goword.datvu.tech:9801
   storage_dir: /root/goword
   name: GoWord
   website: http://goword.datvu.tech

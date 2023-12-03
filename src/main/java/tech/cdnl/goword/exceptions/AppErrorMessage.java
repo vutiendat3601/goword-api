@@ -4,10 +4,10 @@ public class AppErrorMessage {
     public static final String EMAIL_DUPLICATED = "Email was taken.";
     public static final String USER_NOT_FOUND = "User not found.";
     public static final String PLAN_NOT_FOUND = "Plan not found.";
+    public static final String EXERCISE_NOT_FOUND = "Plan not found.";
     public static final String WRONG_PASSWORD = "Wrong password.";
     public static final String REFRESH_TOKEN_INVALID = "Invalid refresh token.";
     public static final String EXPIRED_REFRESH_TOKEN = "Expired refresh token.";
-    public static final String VERIFICATION_CODE_INVALID = "Invalid verification code.";
     public static final String RESOURCE_NOT_FOUND = "Resource not found.";
     public static final String SERVER_ERROR = "Server error.";
     public static final String UNAUTHORIZED = "Unauthorized.";
@@ -16,5 +16,8 @@ public class AppErrorMessage {
     public static final String SESSION_NOT_FOUND = "Session not found.";
     public static final String SESSION_ENDED = "Session end.";
     public static final String ACCESS_FORBIDDEN = "Access forbidden.";
+    public static final String ACCOUNT_EMAIL_NOT_VERIFIED = "Account email not verified.";
+    public static final String VERIFICATION_CODE_INVALID = "Invalid verification code.";
+    public static final String VERIFICATION_CODE_NOT_FOUND = "Verification code not found.";
 
 }

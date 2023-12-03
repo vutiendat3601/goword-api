@@ -25,7 +25,7 @@ import tech.cdnl.goword.auth.models.dto.TokenDto;
 import tech.cdnl.goword.auth.models.entity.RolePermission;
 import tech.cdnl.goword.auth.models.entity.Session;
 import tech.cdnl.goword.auth.models.entity.UserRole;
-import tech.cdnl.goword.auth.models.request.SignUpRequest;
+import tech.cdnl.goword.auth.models.request.UserRequest;
 import tech.cdnl.goword.auth.repos.RolePermissionRepo;
 import tech.cdnl.goword.auth.repos.SessionRepo;
 import tech.cdnl.goword.auth.repos.UserRoleRepo;
@@ -33,6 +33,7 @@ import tech.cdnl.goword.auth.services.AuthService;
 import tech.cdnl.goword.auth.services.AuthServiceAsync;
 import tech.cdnl.goword.exceptions.AppErrorCode;
 import tech.cdnl.goword.exceptions.AppErrorMessage;
+import tech.cdnl.goword.exceptions.AuthException;
 import tech.cdnl.goword.exceptions.ResourceConflictException;
 import tech.cdnl.goword.exceptions.ResourceNotFoundException;
 import tech.cdnl.goword.shared.AppConstant;
@@ -69,21 +70,32 @@ public class AuthServiceImpl implements AuthService {
 	private final RolePermissionRepo rolePermissionRepo;
 
 	@Override
-	public void signUp(SignUpRequest signUpReq) {
-		if (userRepo.existsByEmail(signUpReq.getEmail())) {
+	public void signUp(UserRequest userReq) {
+		if (userRepo.existsByEmail(userReq.getEmail())) {
 			throw new ResourceConflictException(
 					AppErrorMessage.EMAIL_DUPLICATED,
 					AppErrorCode.RESOURCE_CONFLICT_EMAIL_DUPLICATED);
 		}
 		User user = new User(
-				signUpReq.getFirstName(),
-				signUpReq.getLastName(),
-				signUpReq.getEmail(),
-				passEncoder.encode(signUpReq.getPassword()));
+				userReq.getFirstName(),
+				userReq.getLastName(),
+				userReq.getEmail(),
+				passEncoder.encode(userReq.getPassword()));
 		user = userRepo.save(user);
 		UserRole userRole = new UserRole(user.getId(), "USER", true);
 		userRoleRepo.save(userRole);
 		authServiceAsync.sendEmailVerificationCode(user.getEmail());
+	}
+
+	@Override
+	public void updateUser(UserRequest userReq) {
+		User user = userRepo.findByEmail(userReq.getEmail())
+				.orElseThrow(() -> new ResourceConflictException(
+						AppErrorMessage.USER_NOT_FOUND,
+						AppErrorCode.RESOURCE_NOT_FOUND));
+		user.setFirstName(userReq.getFirstName());
+		user.setLastName(userReq.getLastName());
+		user = userRepo.save(user);
 	}
 
 	@Validated
@@ -124,13 +136,14 @@ public class AuthServiceImpl implements AuthService {
 		verifCode = base64Encoder.encodeToString(verifCode.getBytes());
 		User user = userRepo.findByVerificationCode(verifCode)
 				.orElseThrow(() -> new ResourceNotFoundException(
-						AppErrorMessage.VERIFICATION_CODE_INVALID));
-		if (ZonedDateTime.now().toEpochSecond() < user.getVerificationCodeExpireAt()) {
-			user.setVerified(true);
-			user.setVerificationCode(null);
-			user.setVerificationCodeExpireAt(null);
-			user = userRepo.save(user);
+						AppErrorMessage.VERIFICATION_CODE_NOT_FOUND));
+		if (ZonedDateTime.now().toEpochSecond() >= user.getVerificationCodeExpireAt()) {
+			throw new AuthException(AppErrorMessage.VERIFICATION_CODE_INVALID, AppErrorCode.VERIFICATION_CODE_INVALID);
 		}
+		user.setVerified(true);
+		user.setVerificationCode(null);
+		user.setVerificationCodeExpireAt(null);
+		user = userRepo.save(user);
 	}
 
 	@Override
@@ -149,7 +162,7 @@ public class AuthServiceImpl implements AuthService {
 	public void signOut(UUID sessionId) {
 		Session session = sessionRepo.findById(sessionId)
 				.orElseThrow(() -> new ResourceNotFoundException(AppErrorMessage.SESSION_NOT_FOUND));
-		session.setSignedInAt(ZonedDateTime.now());
+		session.setSignedOutAt(ZonedDateTime.now());
 		session.setRefreshToken(null);
 		session.setRefreshTokenExpireAt(null);
 		sessionRepo.save(session);
